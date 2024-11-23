@@ -25,6 +25,7 @@ export const Route = createFileRoute("/posts/$postId")({
     const post = posts?.find((post) => post.id === postId);
 
     if (post) {
+      // @TODO: Placeholder data instead?
       queryClient.setQueryData(postQueryOptions(postId).queryKey, {
         ...post,
         title: `${post.title} (from cache)`,
