@@ -1,6 +1,17 @@
-import { Link, Outlet, createRootRoute } from "@tanstack/react-router";
+import type { QueryClient } from "@tanstack/react-query";
+import {
+  Link,
+  Outlet,
+  createRootRouteWithContext,
+} from "@tanstack/react-router";
 import { TanStackRouterDevtools } from "@tanstack/router-devtools";
 import NextLink from "next/link";
+
+type RouteContext = {
+  queryClient: QueryClient;
+};
+
+const createRootRoute = createRootRouteWithContext<RouteContext>();
 
 export const Route = createRootRoute({
   component: RootComponent,
@@ -28,9 +39,19 @@ function RootComponent() {
         >
           About
         </Link>
+        <Link
+          to="/posts"
+          activeProps={{
+            className: "font-bold",
+          }}
+        >
+          Posts
+        </Link>
       </div>
       <hr />
-      <Outlet />
+      <main className="container px-4 mx-auto py-6">
+        <Outlet />
+      </main>
       <TanStackRouterDevtools position="bottom-right" />
     </>
   );
