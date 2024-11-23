@@ -1,14 +1,26 @@
 "use client";
-import { createRouter, RouterProvider } from "@tanstack/react-router";
+import {
+  createRouter,
+  createRouteMask,
+  RouterProvider,
+} from "@tanstack/react-router";
 import { type ReactNode, useSyncExternalStore } from "react";
 import { getQueryClient } from "~/api/helpers/queryClient";
 import { routeTree } from "~/routeTree.gen";
 
 const queryClient = getQueryClient();
 
+const postDetailMaskRoute = createRouteMask({
+  routeTree,
+  from: "/posts/$postId/modal",
+  to: "/posts/$postId",
+  params: true,
+});
+
 // Set up a Router instance
 const router = createRouter({
   routeTree,
+  routeMasks: [postDetailMaskRoute],
   context: {
     queryClient,
   },

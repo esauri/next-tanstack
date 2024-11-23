@@ -12,7 +12,7 @@ import { LoaderIcon } from "lucide-react";
 import { useEffect } from "react";
 import { postQueryOptions } from "~/api/posts";
 
-export const Route = createFileRoute("/posts/$postId")({
+export const Route = createFileRoute("/posts_/$postId/")({
   component: PostDetailPage,
   errorComponent: ErrorPage,
   pendingComponent: LoadingPage,
