@@ -20,7 +20,7 @@ export function postsQueryOptions() {
   });
 }
 
-export function postQueryOptions(id: number) {
+export function postQueryOptions(id: string) {
   return queryOptions({
     queryKey: ["posts", `posts:${id}`],
     async queryFn() {

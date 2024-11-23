@@ -3,13 +3,13 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { postsQueryOptions } from "~/api/posts";
 
 export const Route = createFileRoute("/posts/")({
-  component: PostListComponent,
+  component: PostsPage,
   loader({ context: { queryClient } }) {
     return queryClient.ensureQueryData(postsQueryOptions());
   },
 });
 
-function PostListComponent() {
+function PostsPage() {
   const postsQuery = useSuspenseQuery(postsQueryOptions());
   const posts = postsQuery.data;
 

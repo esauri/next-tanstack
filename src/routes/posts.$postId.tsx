@@ -3,40 +3,35 @@ import {
   useSuspenseQuery,
 } from "@tanstack/react-query";
 import {
-  ErrorComponent,
+  type ErrorComponentProps,
   createFileRoute,
+  ErrorComponent,
   useRouter,
 } from "@tanstack/react-router";
-import { postsQueryOptions, postQueryOptions } from "~/api/posts";
-import type { ErrorComponentProps } from "@tanstack/react-router";
+import { LoaderIcon } from "lucide-react";
 import { useEffect } from "react";
-import type { Post } from "~/types/Post";
+import { postQueryOptions } from "~/api/posts";
 
 export const Route = createFileRoute("/posts/$postId")({
-  component: PostDetailComponent,
-  errorComponent: PostErrorComponent,
-  loader({ context: { queryClient }, params }) {
-    const postId = parseInt(params.postId, 10);
-
-    const posts: Post[] | undefined = queryClient.getQueryData(
-      postsQueryOptions().queryKey,
-    );
-
-    const post = posts?.find((post) => post.id === postId);
-
-    if (post) {
-      // @TODO: Placeholder data instead?
-      queryClient.setQueryData(postQueryOptions(postId).queryKey, {
-        ...post,
-        title: `${post.title} (from cache)`,
-      });
-    }
-
+  component: PostDetailPage,
+  errorComponent: ErrorPage,
+  pendingComponent: LoadingPage,
+  pendingMs: 100, // Wait at least 100ms before showing the loading spinner
+  loader({ context: { queryClient }, params: { postId } }) {
     return queryClient.ensureQueryData(postQueryOptions(postId));
   },
 });
 
-function PostErrorComponent({ error }: ErrorComponentProps) {
+function LoadingPage() {
+  return (
+    <div className="flex items-center justify-center py-6 gap-1">
+      <LoaderIcon className="size-4 animate-spin" />
+      Loading...
+    </div>
+  );
+}
+
+function ErrorPage({ error }: ErrorComponentProps) {
   const router = useRouter();
 
   const queryErrorResetBoundary = useQueryErrorResetBoundary();
@@ -59,11 +54,9 @@ function PostErrorComponent({ error }: ErrorComponentProps) {
   );
 }
 
-function PostDetailComponent() {
+function PostDetailPage() {
   const params = Route.useParams();
-  const postsQuery = useSuspenseQuery(
-    postQueryOptions(parseInt(params.postId, 10)),
-  );
+  const postsQuery = useSuspenseQuery(postQueryOptions(params.postId));
   const post = postsQuery.data;
 
   return (
