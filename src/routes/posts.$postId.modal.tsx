@@ -82,11 +82,7 @@ function PostDetailModal() {
         <DialogDescription>{post.body}</DialogDescription>
       </DialogHeader>
       <DialogFooter>
-        <Link
-          to="/posts/$postId"
-          target="_blank"
-          params={{ postId: params.postId }}
-        >
+        <Link to="/posts/$postId" params={{ postId: params.postId }}>
           View full post
         </Link>
       </DialogFooter>

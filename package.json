@@ -3,8 +3,10 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
+    "generate-routes": "tsr generate",
+    "watch-routes": "tsr watch",
+    "dev": "npm run watch-routes & next dev",
+    "build": "npm run generate-routes && next build",
     "start": "next start",
     "lint": "next lint"
   },
@@ -20,8 +22,8 @@
   },
   "devDependencies": {
     "@tanstack/react-query-devtools": "^5.61.0",
+    "@tanstack/router-cli": "^1.82.10",
     "@tanstack/router-devtools": "^1.82.1",
-    "@tanstack/router-plugin": "^1.81.9",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
